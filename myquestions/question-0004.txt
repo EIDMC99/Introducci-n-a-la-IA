@@ -1,0 +1,15 @@
+Pregunta 4 — Barcos (Sklearn + NumPy)
+
+El Problema: Un operador portuario quiere agrupar sus embarcaciones en segmentos de riesgo operativo basándose en variables como el tonelaje de carga (toneladas), la antigüedad del barco (años), el número de inspecciones fallidas y la velocidad promedio (nudos). El número óptimo de grupos no se conoce de antemano.
+
+Tu Misión: Escribe una función llamada segmentar_riesgo_barcos(X, k_values) que:
+
+Escale la matriz X con StandardScaler.
+Para cada valor de k en k_values, entrene un KMeans(random_state=42) y calcule el coeficiente de silueta (silhouette_score) sobre los datos escalados.
+Use numpy para identificar el k con el mayor silhouette score.
+Devuelva un número entero con el valor óptimo de k encontrado.
+
+Nombre de la función: segmentar_riesgo_barcos
+Argumentos: (X: np.ndarray, k_values: list)
+Tipo de retorno: int (el valor óptimo de k)
+Librerías requeridas: numpy, sklearn
