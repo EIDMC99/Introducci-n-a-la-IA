@@ -9,3 +9,8 @@ Tu Misión: Escribe una función llamada analizar_demanda_bus(df, ruta_col, hora
 - Use pd.pivot_table para crear una tabla donde las filas sean rutas y las columnas sean pico y valle.
 - Calcule una columna llamada ratio_pico_valle como la división entre el promedio en pico y el promedio en valle.
 - Devuelva el DataFrame resultante ordenado de mayor a menor ratio_pico_valle, con el índice reiniciado.
+
+Nombre de la función: analizar_demanda_bus
+Argumentos: (df: pd.DataFrame, ruta_col: str, hora_col: str, pasajeros_col: str)
+Tipo de retorno: pd.DataFrame
+Librerías requeridas: pandas
