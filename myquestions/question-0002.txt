@@ -1,0 +1,11 @@
+Pregunta 2 — Aviones (Sklearn)
+
+El Problema: Una aerolínea quiere predecir si un vuelo sufrirá un retraso significativo (mayor a 30 minutos) basándose en variables operativas: distancia del vuelo (km), ocupación del avión (%), temperatura en destino (°C) y velocidad del viento (km/h). Los datos contienen valores nulos por fallos en los sensores meteorológicos.
+
+Tu Misión: Escribe una función llamada predecir_retraso_vuelo(X, y) que:
+
+Impute los valores nulos de X usando la mediana de cada columna (SimpleImputer).
+Escale las características con StandardScaler.
+Entrene un RandomForestClassifier(n_estimators=100, random_state=42).
+Evalúe el modelo usando validación cruzada de 5 folds (cross_val_score con scoring='f1').
+Devuelva un array de numpy con los scores F1 obtenidos en cada fold.
