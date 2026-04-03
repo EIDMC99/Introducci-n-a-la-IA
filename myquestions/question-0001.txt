@@ -1,1 +1,16 @@
+Pregunta 1 — Ferrocarriles (Pandas + NumPy)
 
+El Problema: Una empresa ferroviaria registra datos de sus trenes: línea, número de vagones, pasajeros transportados y retrasos en minutos. Algunos registros tienen valores faltantes en la columna de retrasos. Necesitas calcular el índice de puntualidad por línea ferroviaria.
+
+Tu Misión: Escribe una función llamada calcular_puntualidad_ferroviaria(df, linea_col, retraso_col, umbral_min) que:
+
+-Elimine las filas donde retraso_col sea nula.
+-Cree una columna booleana llamada puntual que sea True si el retraso es estrictamente menor al umbral_min.
+-Agrupe por linea_col y calcule, para cada línea: la proporción de trenes puntuales (tasa_puntualidad) y el retraso promedio (retraso_promedio).
+-Use numpy para calcular si el retraso promedio de cada línea está por encima de la mediana global (columna booleana supera_mediana).
+-Devuelva un DataFrame con las columnas [linea_col, tasa_puntualidad, retraso_promedio, supera_mediana] ordenado de mayor a menor tasa_puntualidad.
+
+Nombre de la función: calcular_puntualidad_ferroviaria
+Argumentos: (df: pd.DataFrame, linea_col: str, retraso_col: str, umbral_min: float)
+Tipo de retorno: pd.DataFrame
+Librerías requeridas: pandas, numpy
