@@ -9,3 +9,8 @@ Escale las características con StandardScaler.
 Entrene un RandomForestClassifier(n_estimators=100, random_state=42).
 Evalúe el modelo usando validación cruzada de 5 folds (cross_val_score con scoring='f1').
 Devuelva un array de numpy con los scores F1 obtenidos en cada fold.
+
+Nombre de la función: predecir_retraso_vuelo
+Argumentos: (X: np.ndarray, y: np.ndarray)
+Tipo de retorno: np.ndarray (array con 5 valores float)
+Librerías requeridas: numpy, sklearn
