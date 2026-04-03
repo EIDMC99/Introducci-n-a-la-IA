@@ -6,6 +6,7 @@ from sklearn.ensemble import RandomForestClassifier
 from sklearn.model_selection import cross_val_score
 from sklearn.pipeline import Pipeline
  
+ 
 def generar_caso_de_uso_predecir_retraso_vuelo():
     """
     Genera un caso de prueba aleatorio (input y output esperado)
@@ -52,6 +53,7 @@ def generar_caso_de_uso_predecir_retraso_vuelo():
     output_data = cross_val_score(pipeline, X, y, cv=5, scoring="f1")
  
     return input_data, output_data
+ 
  
 # --- Ejemplo de uso ---
 if __name__ == "__main__":
