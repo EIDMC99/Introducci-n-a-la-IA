@@ -1,0 +1,133 @@
+Error en el generador de casos de uso para "answer-0651.py"
+
+  ================================================================
+ANÁLISIS DETALLADO: POR QUÉ EL GENERADOR ESTÁ MAL
+Función: procesar_datos_transporte(df, target_col)
+================================================================
+ 
+El enunciado define claramente 5 pasos que debe ejecutar la función:
+ 
+  1. Eliminar outliers usando IQR (Rango Intercuartílico)
+  2. Crear la variable costo_por_km
+  3. Normalizar variables numéricas con MinMaxScaler
+  4. Calcular correlación con la variable objetivo
+  5. Seleccionar variables con correlación absoluta > 0.3
+ 
+El generador de casos de uso debería construir el "resultado esperado"
+aplicando exactamente esos mismos pasos. Sin embargo, al revisar su
+código línea por línea, se encuentran dos omisiones críticas:
+ 
+ 
+----------------------------------------------------------------
+ERROR 1: El generador NO aplica el filtro de outliers con IQR
+----------------------------------------------------------------
+ 
+Lo que el enunciado pide:
+  Para cada columna numérica (excepto target), calcular Q1, Q3 e IQR,
+  y eliminar las filas donde el valor esté fuera del rango:
+  [Q1 - 1.5*IQR , Q3 + 1.5*IQR]
+ 
+Lo que el generador hace:
+  Crea el DataFrame con 30 filas y lo usa directamente, sin filtrar
+  ninguna fila. No existe ninguna línea en el generador que calcule
+  Q1, Q3, IQR ni que elimine registros.
+ 
+Fragmento del generador:
+  df = pd.DataFrame({
+      "distancia": np.random.randint(1, 100, 30),
+      "tiempo":    np.random.randint(1, 10, 30),
+      "costo":     np.random.randint(50, 500, 30)
+  })
+  df["target"] = df["costo"]
+  df["costo_por_km"] = df["costo"] / df["distancia"]
+  # <-- Aquí debería ir el filtro IQR, pero no está.
+  corr = df.corr()
+ 
+Consecuencia directa:
+  - El generador siempre devuelve un esperado con 30 filas.
+  - La solución correcta devuelve menos filas (en la prueba: 25),
+    porque sí elimina los valores atípicos.
+  - Esto hace que la comparación de filas siempre falle:
+      Filas resultado  : 25
+      Filas esperadas  : 30
+ 
+ 
+----------------------------------------------------------------
+ERROR 2: El generador NO aplica MinMaxScaler
+----------------------------------------------------------------
+ 
+Lo que el enunciado pide:
+  Después de filtrar outliers y crear costo_por_km, normalizar todas
+  las columnas numéricas (excepto target) usando MinMaxScaler, que
+  transforma cada valor al rango [0, 1].
+ 
+Lo que el generador hace:
+  Calcula correlaciones directamente sobre los valores originales
+  sin escalar. Esto se evidencia en el output del esperado, donde
+  los valores de 'costo' y 'target' aparecen como enteros grandes
+  (177, 166, 475...) en lugar de decimales entre 0 y 1.
+ 
+  Ejemplo del output esperado del generador:
+      costo  target
+      177    177
+      166    166
+      175    175
+      475    475
+ 
+  Ejemplo del output de la solución correcta:
+      costo      target
+      0.582609   302
+      0.275362   196
+      1.000000   446
+ 
+Nota: la columna target NO se escala (es correcto excluirla),
+pero el resto de columnas numéricas sí deben estar normalizadas.
+ 
+Consecuencia directa:
+  Aunque la normalización no cambia el orden ni la dirección de
+  las correlaciones lineales, sí cambia el dataset sobre el que
+  se calcula la correlación cuando se combina con el Error 1.
+  Al tener datasets de diferente tamaño (25 vs 30 filas), las
+  correlaciones resultantes son distintas, lo que lleva a que
+  se seleccionen columnas diferentes.
+ 
+ 
+----------------------------------------------------------------
+ERROR 3 (derivado): Las columnas seleccionadas no coinciden
+----------------------------------------------------------------
+ 
+Porque el generador calcula las correlaciones sobre un dataset
+diferente (30 filas, sin IQR, sin escalar), los valores de
+correlación que obtiene son distintos a los de la solución correcta
+(25 filas, con IQR aplicado, escaladas).
+ 
+Resultado en la prueba:
+  Columnas resultado (solución) : ['costo', 'costo_por_km', 'distancia', 'target']
+  Columnas esperadas (generador): ['costo', 'target']
+ 
+  La solución encontró que 'distancia' y 'costo_por_km' también
+  tienen correlación > 0.3 con target, pero esto es sobre el
+  dataset ya filtrado por IQR. El generador, al no filtrar, obtiene
+  correlaciones distintas donde esas columnas no superan el umbral.
+ 
+  Este no es un error de la solución: es una consecuencia directa
+  de que el generador omitió el paso 1 (IQR).
+ 
+ 
+----------------------------------------------------------------
+RESUMEN DE ERRORES
+----------------------------------------------------------------
+ 
+  | #  | Problema                        | Responsable  |
+  |----|----------------------------------|--------------|
+  | 1  | No aplica filtro IQR            | Generador    |
+  | 2  | No aplica MinMaxScaler          | Generador    |
+  | 3  | Columnas seleccionadas distintas | Generador    |
+  | 4  | Filas esperadas incorrectas      | Generador    |
+ 
+  La lógica interna de la función procesar_datos_transporte()
+  es correcta e implementa fielmente los 5 pasos del enunciado.
+ 
+================================================================
+
+    El resto de preguntas no presentaron problema alguno
